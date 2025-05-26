@@ -9,29 +9,29 @@ export class Player extends PIXI.Container {
     constructor() {
         super();
         
-        // Create main ball
+        // Create the red ball body
         this.ball = new PIXI.Graphics();
-        this.ball.beginFill(0xFF0000); // Red color
-        this.ball.drawCircle(0, 0, 20); // radius 20
+        this.ball.beginFill(0xFF0000);     // Red color
+        this.ball.drawCircle(0, 0, 20);    // Circle with radius 20
         this.ball.endFill();
         
-        // Create eyes
+        // Create white eyes
         this.leftEye = new PIXI.Graphics();
-        this.leftEye.beginFill(0xFFFFFF);
-        this.leftEye.drawCircle(-7, -5, 5);
+        this.leftEye.beginFill(0xFFFFFF);  // White color
+        this.leftEye.drawCircle(-7, -5, 5); // Left eye
         this.leftEye.endFill();
         
         this.rightEye = new PIXI.Graphics();
-        this.rightEye.beginFill(0xFFFFFF);
-        this.rightEye.drawCircle(7, -5, 5);
+        this.rightEye.beginFill(0xFFFFFF); // White color
+        this.rightEye.drawCircle(7, -5, 5); // Right eye
         this.rightEye.endFill();
         
-        // Add parts to container
+        // Add all parts to the container
         this.addChild(this.ball);
         this.addChild(this.leftEye);
         this.addChild(this.rightEye);
         
-        // Initialize velocity
+        // Initialize velocity for movement
         this.velocity = new PIXI.Point(0, 0);
     }
 

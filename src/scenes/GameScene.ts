@@ -7,14 +7,10 @@ export class GameScene extends PIXI.Container {
     constructor() {
         super();
         
-        // Create player
+        // Create and position player at center
         this.player = new Player();
-        this.player.x = 400; // Center horizontally
-        this.player.y = 300; // Center vertically
+        this.player.x = 400;  // Center horizontally
+        this.player.y = 300;  // Center vertically
         this.addChild(this.player);
-    }
-
-    update(delta: number) {
-        this.player.update(delta);
     }
 }

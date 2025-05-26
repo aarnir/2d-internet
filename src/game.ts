@@ -13,14 +13,8 @@ export class Game {
         });
         document.body.appendChild(this.app.view as HTMLCanvasElement);
 
-        // Create and add game scene
         this.gameScene = new GameScene();
         this.app.stage.addChild(this.gameScene);
-
-        // Set up game loop
-        this.app.ticker.add((delta) => {
-            this.gameScene.update(delta);
-        });
     }
 }
 
