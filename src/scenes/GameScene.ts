@@ -18,6 +18,28 @@ export class GameScene extends PIXI.Container {
     header.endFill();
     this.addChild(header);
 
+    // Facebook "f" logo
+    const fLogo = new PIXI.Text("f", {
+      fontFamily: "Arial Black",
+      fontSize: 40,
+      fill: 0xffffff,
+      fontWeight: "bold",
+    });
+    fLogo.x = 20;
+    fLogo.y = 10;
+    this.addChild(fLogo);
+
+    // Facebook text
+    const fbText = new PIXI.Text("Facebook", {
+      fontFamily: "Arial",
+      fontSize: 28,
+      fill: 0xffffff,
+      fontWeight: "bold",
+    });
+    fbText.x = 60;
+    fbText.y = 16;
+    this.addChild(fbText);
+
     // Sidebar
     const sidebar = new PIXI.Graphics();
     sidebar.beginFill(0xe4e6eb);
@@ -25,21 +47,68 @@ export class GameScene extends PIXI.Container {
     sidebar.endFill();
     this.addChild(sidebar);
 
+    // Sidebar menu items
+    const menuItems = ["Home", "Friends", "Groups", "Marketplace"];
+    menuItems.forEach((item, i) => {
+      const icon = new PIXI.Graphics();
+      icon.beginFill(0x1877f2);
+      icon.drawCircle(30, 90 + i * 50, 12);
+      icon.endFill();
+      this.addChild(icon);
+
+      const label = new PIXI.Text(item, {
+        fontFamily: "Arial",
+        fontSize: 18,
+        fill: 0x333333,
+      });
+      label.x = 50;
+      label.y = 80 + i * 50;
+      this.addChild(label);
+    });
+
     // Platforms (posts in the feed)
     const platformData = [
       { x: 140, y: 520, w: 200, h: 20 },
       { x: 380, y: 440, w: 180, h: 20 },
       { x: 600, y: 360, w: 120, h: 20 },
       { x: 300, y: 280, w: 200, h: 20 },
-      { x: 550, y: 260, w: 180, h: 20 }, // lowered from 220 to 260
+      { x: 550, y: 260, w: 180, h: 20 },
     ];
     for (const plat of platformData) {
+      // Post background
       const p = new PIXI.Graphics();
+      p.lineStyle(2, 0x1877f2);
       p.beginFill(0xffffff);
-      p.drawRect(plat.x, plat.y, plat.w, plat.h);
+      p.drawRoundedRect(plat.x, plat.y, plat.w, plat.h, 8);
       p.endFill();
+
+      // Profile circle
+      const profile = new PIXI.Graphics();
+      profile.beginFill(0x1877f2);
+      profile.drawCircle(plat.x + 18, plat.y + 10, 8);
+      profile.endFill();
+
+      // Name text
+      const name = new PIXI.Text("User", {
+        fontFamily: "Arial",
+        fontSize: 12,
+        fill: 0x333333,
+      });
+      name.x = plat.x + 32;
+      name.y = plat.y + 2;
+
+      // Like icon
+      const like = new PIXI.Text("👍", { fontSize: 14 });
+      like.x = plat.x + plat.w - 40;
+      like.y = plat.y + 2;
+
+      // Comment icon
+      const comment = new PIXI.Text("💬", { fontSize: 14 });
+      comment.x = plat.x + plat.w - 20;
+      comment.y = plat.y + 2;
+
       this.platforms.push(p);
-      this.addChild(p);
+      this.addChild(p, profile, name, like, comment);
     }
 
     // Finish (Like button)
@@ -61,6 +130,29 @@ export class GameScene extends PIXI.Container {
     this.player.beginFill(0xe53935);
     this.player.drawCircle(0, 0, 20);
     this.player.endFill();
+
+    // Eyes
+    const leftEye = new PIXI.Graphics();
+    leftEye.beginFill(0xffffff);
+    leftEye.drawCircle(-7, -5, 5);
+    leftEye.endFill();
+    const rightEye = new PIXI.Graphics();
+    rightEye.beginFill(0xffffff);
+    rightEye.drawCircle(7, -5, 5);
+    rightEye.endFill();
+
+    // Pupils
+    const leftPupil = new PIXI.Graphics();
+    leftPupil.beginFill(0x000000);
+    leftPupil.drawCircle(-7, -5, 2);
+    leftPupil.endFill();
+    const rightPupil = new PIXI.Graphics();
+    rightPupil.beginFill(0x000000);
+    rightPupil.drawCircle(7, -5, 2);
+    rightPupil.endFill();
+
+    this.player.addChild(leftEye, rightEye, leftPupil, rightPupil);
+
     this.player.x = 160;
     this.player.y = 500;
     this.addChild(this.player);
@@ -69,11 +161,12 @@ export class GameScene extends PIXI.Container {
   public movePlayer(dx: number, dy: number) {
     this.playerVelocity.x = dx;
   }
-
+  private jumpCooldown: number = 0;
   public jumpPlayer(force: number) {
     if (this.onGround) {
       this.playerVelocity.y = force;
       this.onGround = false;
+      this.jumpCooldown = 120;
     }
   }
 
